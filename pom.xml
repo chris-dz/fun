@@ -125,7 +125,7 @@
                     <appServicePlanName>ASP-funrg-a15e</appServicePlanName>
                     <!-- function app region-->
                     <!-- refers https://github.com/microsoft/azure-maven-plugins/tree/develop/azure-functions-maven-plugin#supported-regions for all valid values -->
-                    <region>westus</region>
+                    <region>centralus</region>
                     <!-- function pricingTier, default to be consumption if not specified -->
                     <!-- refers https://github.com/microsoft/azure-maven-plugins/tree/develop/azure-functions-maven-plugin#supported-pricing-tiers for all valid values -->
                     <!-- <pricingTier></pricingTier> -->
