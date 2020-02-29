@@ -40,7 +40,7 @@ jobs:
       run: |
         # If your function app project is not located in your repository's root
         # Please change your directory for maven build in pushd
-        pushd ./fun
+        pushd .
         mvn clean package
         mvn azure-functions:package
         popd
