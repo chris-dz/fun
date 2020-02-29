@@ -56,9 +56,9 @@ jobs:
         # Please uncomment the following line
         publish-profile: ${{ secrets.SCM_CREDENTIALS }}
 
-    #- name: 'use the published functionapp url in upcoming steps'
-    #  run: |
-    #    echo "${{ steps.fa.outputs.app-url }}"
+    - name: 'use the published functionapp url in upcoming steps'
+      run: |
+        echo "${{ steps.fa.outputs.app-url }}"
 
 # For more information on GitHub Actions:
 #   https://help.github.com/en/categories/automating-your-workflow-with-github-actions
