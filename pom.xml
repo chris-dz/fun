@@ -122,7 +122,7 @@
                     <!-- function app resource group -->
                     <resourceGroup>fun-rg</resourceGroup>
                     <!-- function app service plan name -->
-                    <appServicePlanName>ASP-funrg-a15e (Y1: 0)</appServicePlanName>
+                    <appServicePlanName>ASP-funrg-a15e</appServicePlanName>
                     <!-- function app region-->
                     <!-- refers https://github.com/microsoft/azure-maven-plugins/tree/develop/azure-functions-maven-plugin#supported-regions for all valid values -->
                     <region>westus</region>
