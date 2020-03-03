@@ -77,7 +77,7 @@ public class Function {
 
             // build HTTP response with size of requested blob
             return request.createResponseBuilder(HttpStatus.OK)
-                .body(result)
+                .body(content)
                 .build();
     }
 }
