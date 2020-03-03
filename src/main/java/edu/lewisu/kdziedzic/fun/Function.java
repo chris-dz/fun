@@ -84,7 +84,7 @@ public class Function {
                 Calendar calendar = Calendar.getInstance();
                 outputItem.setValue(
                     String.format(
-                        "<Entry timestamp=%1$yt-%1$mt-%1$mt %1$Ht:%1$Mt:%1$St>\n%2$s\n</Entry>\n\n",
+                        "<Entry timestamp=%1$tY-%1$tm-%1$td %1$tH:%1$tM:%1$tS>\n%2$s\n</Entry>\n\n",
                         calendar, content));
             } catch (Exception e) {
                 content = e.toString();
