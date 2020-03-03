@@ -66,7 +66,7 @@ public class Function {
     public HttpResponseMessage write(
         @HttpTrigger(name = "req", methods = {HttpMethod.PUT}, authLevel = AuthorizationLevel.ANONYMOUS)
             HttpRequestMessage<Optional<String>> request,
-        String requestContent,
+        String req,
         @BlobOutput(name = "target", path = "app-data/data.txt") OutputBinding<String> outputItem,
         final ExecutionContext context) {
             // Save blob to outputItem
@@ -75,7 +75,7 @@ public class Function {
 
             // build HTTP response with size of requested blob
             return request.createResponseBuilder(HttpStatus.OK)
-                .body(requestContent)  // .body(retrieved)
+                .body(req)  // .body(retrieved)
                 .build();
     }
 }
