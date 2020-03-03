@@ -82,10 +82,9 @@ public class Function {
                     content = content.substring("message=".length());
                 }
                 Calendar calendar = Calendar.getInstance();
-                outputItem.setValue(
-                    String.format(
-                        "<Entry timestamp=%1$tY-%1$tm-%1$td %1$tH:%1$tM:%1$tS>\n%2$s\n</Entry>\n\n",
-                        calendar, content));
+                content = String.format("<Entry timestamp=%1$tY-%1$tm-%1$td %1$tH:%1$tM:%1$tS>\n%2$s\n</Entry>\n\n",
+                    calendar, content) + inFile;
+                outputItem.setValue(content);
             } catch (Exception e) {
                 content = e.toString();
                 for (StackTraceElement el : e.getStackTrace()) {
@@ -95,7 +94,7 @@ public class Function {
 
             // build HTTP response with the content of the POST body
             return request.createResponseBuilder(HttpStatus.OK)
-                .body(content) // .body(retrieved)
+                .body(content)
                 .build();
     }
 }
