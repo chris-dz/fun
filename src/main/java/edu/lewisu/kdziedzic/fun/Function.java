@@ -75,9 +75,9 @@ public class Function {
         final ExecutionContext context) {
             // Save blob to outputItem
             String content = request.getBody().get();
-            outputItem.setValue("<Entry>\n" + content + "\n</Entry>\n\n");
+            // outputItem.setValue("<Entry>\n" + content + "\n</Entry>\n\n");
 
-            // build HTTP response with size of requested blob
+            // build HTTP response with the content of the POST body
             return request.createResponseBuilder(HttpStatus.OK)
                 .body(String.format(content)) // .body(retrieved)
                 .build();
