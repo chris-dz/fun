@@ -40,27 +40,6 @@ public class Function {
             final ExecutionContext context) {
         context.getLogger().info("Java HTTP trigger processed a request.");
 
-        // String response = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\">\n" +
-        // "<html>" +
-        // "<head>" +
-        //     "<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\"/>" +
-        //     "<title>Fun</title>" +
-        // "</head>" +
-        // "<body lang=\"en-US\" dir=\"ltr\">" +
-        // "<div id=\"header\">" +
-        // "<form id=\"form\" method=\"post\" action=\"/api/write\">" +
-        //     "<fieldset>" +
-        //         "<legend>Guest book entry form</legend>" +
-        //         "<p>" +
-        //         "<label for=\"message\">Sign in:</label><br/>" +
-        //         "<textarea id=\"message\" name=\"message\" placeholder=\"Enter your sign in text here\" rows=\"10\" cols=\"200\"></textarea><br/>" +
-        //         "</p>" +
-        //         "<div style=\"display: block; text-align: center;\">" +
-        //             "<input type=\"submit\" value=\"Submit\"/>" +
-        //         "</div>" +
-        //     "</fieldset>" +
-        // "</form></div></body></html>";
-
         String response = form;
 
         return request.createResponseBuilder(HttpStatus.OK).body(response).header("Content-Type","text/html").build();
@@ -77,12 +56,12 @@ public class Function {
             // Save blob to outputItem
             String content = request.getBody().get();
             try {
-                content = URLDecoder.decode(content, "utf-8");
+                content = URLDecoder.decode(content, StandardCharsets.UTF_8);
                 if (content.startsWith("message=")) {
                     content = content.substring("message=".length());
                 }
                 Calendar calendar = Calendar.getInstance();
-                content = String.format("<Entry timestamp=%1$tY-%1$tm-%1$td %1$tH:%1$tM:%1$tS>\n%2$s\n</Entry>\n\n",
+                content = String.format("<Entry timestamp=\"%1$tY-%1$tm-%1$td %1$tH:%1$tM:%1$tS\">\n%2$s\n</Entry>\n\n",
                     calendar, content) + inFile;
                 outputItem.setValue(content);
             } catch (Exception e) {
