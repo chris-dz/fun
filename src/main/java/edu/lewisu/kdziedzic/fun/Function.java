@@ -37,7 +37,7 @@ public class Function {
             final ExecutionContext context) {
         context.getLogger().info("Java HTTP trigger processed a request.");
 
-        String response = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\">" +
+        String response = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\">\n" +
         "<html>" +
         "<head>" +
             "<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\"/>" +
