@@ -78,7 +78,14 @@ public class Function {
             String content = request.getBody().get();
             try {
                 content = URLDecoder.decode(content, "utf-8");
-                outputItem.setValue("<Entry>\n" + content + "\n</Entry>\n\n");
+                if (content.startsWith("message=")) {
+                    content = content.substring("message=".length());
+                }
+                Calendar calendar = Calendar.getInstance();
+                outputItem.setValue(
+                    String.format(
+                        "<Entry timestamp=%1$yt-%1$mt-%1$mt %1$Ht:%1$Mt:%1$St>\n%2$s\n</Entry>\n\n",
+                        calendar, content));
             } catch (Exception e) {
                 content = e.toString();
                 for (StackTraceElement el : e.getStackTrace()) {
