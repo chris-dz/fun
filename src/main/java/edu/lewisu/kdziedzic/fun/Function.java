@@ -64,7 +64,7 @@ public class Function {
     @FunctionName("write")
     @StorageAccount("AzureWebJobsStorage")
     public HttpResponseMessage write(
-        @HttpTrigger(name = "req", methods = {HttpMethod.PUT}, authLevel = AuthorizationLevel.ANONYMOUS)
+        @HttpTrigger(name = "req", methods = {HttpMethod.POST}, authLevel = AuthorizationLevel.ANONYMOUS)
             HttpRequestMessage<Optional<String>> request,
             // String req,
         @BlobOutput(name = "target", path = "app-data/data.txt") OutputBinding<String> outputItem,
