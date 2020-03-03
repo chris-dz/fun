@@ -1,5 +1,6 @@
 package edu.lewisu.kdziedzic.fun;
 
+import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import com.microsoft.azure.functions.annotation.*;
@@ -70,12 +71,13 @@ public class Function {
     public HttpResponseMessage write(
         @HttpTrigger(name = "req", methods = {HttpMethod.POST}, authLevel = AuthorizationLevel.ANONYMOUS)
             HttpRequestMessage<Optional<String>> request,
-            // String req,
+        @BlobInput(name = "file", dataType = "string", path = "app-data/data.txt") String inFile,
         @BlobOutput(name = "target", path = "app-data/data.txt") OutputBinding<String> outputItem,
         final ExecutionContext context) {
             // Save blob to outputItem
             String content = request.getBody().get();
             try {
+                content = URLDecoder.decode(content, "utf-8");
                 outputItem.setValue("<Entry>\n" + content + "\n</Entry>\n\n");
             } catch (Exception e) {
                 content = e.toString();
