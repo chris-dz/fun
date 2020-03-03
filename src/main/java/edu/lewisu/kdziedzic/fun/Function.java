@@ -32,31 +32,35 @@ public class Function {
     }
 
     @FunctionName("getForm")
+    @StorageAccount("AzureWebJobsStorage")
     public HttpResponseMessage getForm(
             @HttpTrigger(name = "req", methods = {HttpMethod.GET}, authLevel = AuthorizationLevel.ANONYMOUS) HttpRequestMessage<Optional<String>> request,
+            @BlobInput(name = "file", dataType = "string", path = "app-data/form.html") String form,
             final ExecutionContext context) {
         context.getLogger().info("Java HTTP trigger processed a request.");
 
-        String response = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\">\n" +
-        "<html>" +
-        "<head>" +
-            "<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\"/>" +
-            "<title>Fun</title>" +
-        "</head>" +
-        "<body lang=\"en-US\" dir=\"ltr\">" +
-        "<div id=\"header\">" +
-        "<form id=\"form\" method=\"post\" action=\"/api/write\">" +
-            "<fieldset>" +
-                "<legend>Guest book entry form</legend>" +
-                "<p>" +
-                "<label for=\"message\">Sign in:</label><br/>" +
-                "<textarea id=\"message\" name=\"message\" placeholder=\"Enter your sign in text here\" rows=\"10\" cols=\"200\"></textarea><br/>" +
-                "</p>" +
-                "<div style=\"display: block; text-align: center;\">" +
-                    "<input type=\"submit\" value=\"Submit\"/>" +
-                "</div>" +
-            "</fieldset>" +
-        "</form></div></body></html>";
+        // String response = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\">\n" +
+        // "<html>" +
+        // "<head>" +
+        //     "<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\"/>" +
+        //     "<title>Fun</title>" +
+        // "</head>" +
+        // "<body lang=\"en-US\" dir=\"ltr\">" +
+        // "<div id=\"header\">" +
+        // "<form id=\"form\" method=\"post\" action=\"/api/write\">" +
+        //     "<fieldset>" +
+        //         "<legend>Guest book entry form</legend>" +
+        //         "<p>" +
+        //         "<label for=\"message\">Sign in:</label><br/>" +
+        //         "<textarea id=\"message\" name=\"message\" placeholder=\"Enter your sign in text here\" rows=\"10\" cols=\"200\"></textarea><br/>" +
+        //         "</p>" +
+        //         "<div style=\"display: block; text-align: center;\">" +
+        //             "<input type=\"submit\" value=\"Submit\"/>" +
+        //         "</div>" +
+        //     "</fieldset>" +
+        // "</form></div></body></html>";
+
+        String response = form;
 
         return request.createResponseBuilder(HttpStatus.OK).body(response).header("Content-Type","text/html").build();
     }
@@ -71,7 +75,7 @@ public class Function {
         final ExecutionContext context) {
             // Save blob to outputItem
             String content = request.getBody().get();
-            // outputItem.setValue("<Entry>\n" + content + "</Entry>\n\n");
+            outputItem.setValue("<Entry>\n" + content + "\n</Entry>\n\n");
 
             // build HTTP response with size of requested blob
             return request.createResponseBuilder(HttpStatus.OK)
