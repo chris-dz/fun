@@ -58,7 +58,7 @@ public class Function {
             "</fieldset>" +
         "</form></div></body></html>";
 
-        return request.createResponseBuilder(HttpStatus.OK).body(response).build();
+        return request.createResponseBuilder(HttpStatus.OK).body(response).header("Content-Type","text/html").build();
     }
 
     @FunctionName("write")
