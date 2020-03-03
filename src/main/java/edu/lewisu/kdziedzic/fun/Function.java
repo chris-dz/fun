@@ -75,7 +75,14 @@ public class Function {
         final ExecutionContext context) {
             // Save blob to outputItem
             String content = request.getBody().get();
-            // outputItem.setValue("<Entry>\n" + content + "\n</Entry>\n\n");
+            try {
+                outputItem.setValue("<Entry>\n" + content + "\n</Entry>\n\n");
+            } catch (Exception e) {
+                content = e.toString();
+                for (StackTraceElement el : e.getStackTrace()) {
+                    content += "\n" + el;
+                }
+            }
 
             // build HTTP response with the content of the POST body
             return request.createResponseBuilder(HttpStatus.OK)
