@@ -86,7 +86,7 @@ public class Function {
 
             // build HTTP response with the content of the POST body
             return request.createResponseBuilder(HttpStatus.OK)
-                .body(String.format(content)) // .body(retrieved)
+                .body(content) // .body(retrieved)
                 .build();
     }
 }
