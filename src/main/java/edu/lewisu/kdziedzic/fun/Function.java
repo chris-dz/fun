@@ -62,7 +62,7 @@ public class Function {
     }
 
     @FunctionName("write")
-    @StorageAccount("https://storageaccountfunrgaa05.blob.core.windows.net")
+    @StorageAccount("AzureWebJobsStorage")
     public HttpResponseMessage write(
         @HttpTrigger(name = "req", methods = {HttpMethod.PUT}, authLevel = AuthorizationLevel.ANONYMOUS)
             HttpRequestMessage<Optional<String>> request,
