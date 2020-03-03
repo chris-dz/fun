@@ -69,11 +69,31 @@ public class Function {
                 for (StackTraceElement el : e.getStackTrace()) {
                     content += "\n" + el;
                 }
+                return request.createResponseBuilder(HttpStatus.BAD_REQUEST)
+                    .body(content)
+                    .build();
             }
+
+            // convert the content string to HTML
+            String result = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\">" +
+            "<html>" +
+            "<head>" +
+                "<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\"/>" +
+                "<title>Fun</title>" +
+            "</head>" +
+            "<body lang=\"en-US\" dir=\"ltr\">";
+
+            content = content.replaceAll("\">", "\n");
+            content = content.replaceAll("<Entry ", "<p style=\"white-space: pre;\">\n");
+            content = content.replaceAll("timestamp=\"", "Signed in on: ");
+            content = content.replaceAll("</Entry>", "</p>");
+
+            result += content + "</body></html>";
 
             // build HTTP response with the content of the POST body
             return request.createResponseBuilder(HttpStatus.OK)
-                .body(content)
+                .body(result)
+                .header("Content-Type","text/html")
                 .build();
     }
 }
