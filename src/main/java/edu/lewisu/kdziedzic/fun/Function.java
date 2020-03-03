@@ -66,16 +66,16 @@ public class Function {
     public HttpResponseMessage write(
         @HttpTrigger(name = "req", methods = {HttpMethod.PUT}, authLevel = AuthorizationLevel.ANONYMOUS)
             HttpRequestMessage<Optional<String>> request,
-        String req,
+            // String req,
         @BlobOutput(name = "target", path = "app-data/data.txt") OutputBinding<String> outputItem,
         final ExecutionContext context) {
             // Save blob to outputItem
-            // String content = request.getBody().get();
+            String content = request.getBody().get();
             // outputItem.setValue("<Entry>\n" + content + "</Entry>\n\n");
 
             // build HTTP response with size of requested blob
             return request.createResponseBuilder(HttpStatus.OK)
-                .body(req)  // .body(retrieved)
+                .body(String.format(content)) // .body(retrieved)
                 .build();
     }
 }
