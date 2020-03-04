@@ -79,12 +79,20 @@ public class Function {
             "<head>" +
                 "<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\"/>" +
                 "<title>Fun</title>" +
+                "<style>" +
+                "body {" +
+                    "background-image: url(\"https://storageaccountfunrgaa05.blob.core.windows.net/app-data/IMG_9456_sm_cr.JPG\"); " +
+                    "background-repeat: no-repeat; " +
+                    "background-position: center; " +
+                    "background-attachment: fixed; " +
+                "}" +
+                "</style>" +
             "</head>" +
-            "<body lang=\"en-US\" dir=\"ltr\" style=\"background-image: url('https://storageaccountfunrgaa05.blob.core.windows.net/app-data/IMG_9456_sm_cr.JPG')\">";
+            "<body lang=\"en-US\" dir=\"ltr\">";
 
-            content = content.replaceAll("\">", "</span>\n");
-            content = content.replaceAll("<Entry ", "<p style=\"white-space: pre;\">\n");
-            content = content.replaceAll("timestamp=\"", "<span style=\"background-color: LightGray;\">Signed in on: ");
+            content = content.replaceAll("\">", "\n");
+            content = content.replaceAll("<Entry ", "<p style=\"background-color: LightGray; white-space: pre; opacity: 0.7\">\n");
+            content = content.replaceAll("timestamp=\"", "Signed in on: ");
             content = content.replaceAll("</Entry>", "</p>");
 
             result += content + "</body></html>";
