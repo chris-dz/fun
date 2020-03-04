@@ -86,12 +86,19 @@ public class Function {
                     "background-position: center; " +
                     "background-attachment: fixed; " +
                 "}" +
+                "p {" +
+                    "background-color: LightGray; " +
+                    "white-space: pre; " +
+                    "opacity: 0.7; " +
+                    "margin: 50; " +
+                    "padding: 20;" +
+                "}" +
                 "</style>" +
             "</head>" +
             "<body lang=\"en-US\" dir=\"ltr\">";
 
             content = content.replaceAll("\">", "\n");
-            content = content.replaceAll("<Entry ", "<p style=\"background-color: LightGray; white-space: pre; opacity: 0.7; margin: 30; padding: 10\">\n");
+            content = content.replaceAll("<Entry ", "<p>");
             content = content.replaceAll("timestamp=\"", "Signed in on: ");
             content = content.replaceAll("</Entry>", "</p>");
 
