@@ -90,6 +90,11 @@ public class Function {
 
             result += content + "</body></html>";
 
+            // Adding a comment just to force a GitHub push.
+            // The last two deployments failed due to a missing deployment directory???
+            // Looks like some maven dependencies aren't being fully downloaded.
+            // I suspect Microsoft discrimination cutting my downloads off...
+
             // build HTTP response with the content of the POST body
             return request.createResponseBuilder(HttpStatus.OK)
                 .body(result)
