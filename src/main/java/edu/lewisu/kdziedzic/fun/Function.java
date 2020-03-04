@@ -1,7 +1,6 @@
 package edu.lewisu.kdziedzic.fun;
 
 import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 import com.microsoft.azure.functions.annotation.*;
 import com.microsoft.azure.functions.*;
@@ -56,7 +55,7 @@ public class Function {
             // Save blob to outputItem
             String content = request.getBody().get();
             try {
-                content = URLDecoder.decode(content, StandardCharsets.UTF_8);
+                content = URLDecoder.decode(content, "utf-8" /*Strangely, Maven on Azure didn't like StandardCharsets.UTF_8*/);
                 if (content.startsWith("message=")) {
                     content = content.substring("message=".length());
                 }
@@ -89,11 +88,6 @@ public class Function {
             content = content.replaceAll("</Entry>", "</p>");
 
             result += content + "</body></html>";
-
-            // Adding a comment just to force a GitHub push.
-            // The last two deployments failed due to a missing deployment directory???
-            // Looks like some maven dependencies aren't being fully downloaded.
-            // I suspect Microsoft discrimination cutting my downloads off...
 
             // build HTTP response with the content of the POST body
             return request.createResponseBuilder(HttpStatus.OK)
