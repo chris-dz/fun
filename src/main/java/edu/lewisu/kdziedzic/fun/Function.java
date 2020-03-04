@@ -91,7 +91,7 @@ public class Function {
             "<body lang=\"en-US\" dir=\"ltr\">";
 
             content = content.replaceAll("\">", "\n");
-            content = content.replaceAll("<Entry ", "<p style=\"background-color: LightGray; white-space: pre; opacity: 0.7\">\n");
+            content = content.replaceAll("<Entry ", "<p style=\"background-color: LightGray; white-space: pre; opacity: 0.7; margin: 30; padding: 10\">\n");
             content = content.replaceAll("timestamp=\"", "Signed in on: ");
             content = content.replaceAll("</Entry>", "</p>");
 
