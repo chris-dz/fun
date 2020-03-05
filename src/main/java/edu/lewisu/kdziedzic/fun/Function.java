@@ -52,9 +52,10 @@ public class Function {
         @BlobInput(name = "file", dataType = "string", path = "app-data/data.txt") String inFile,
         @BlobOutput(name = "target", path = "app-data/data.txt") OutputBinding<String> outputItem,
         final ExecutionContext context) {
-            
+
             String content = "";
-            String result = null;
+            String result = getPageHeader();
+
             if (request.getHttpMethod() == HttpMethod.POST) {
                 // Add body of the request to the stored messages
                 content = request.getBody().get();
@@ -79,42 +80,50 @@ public class Function {
             } else {
                 // This is a GET request, just get the existing messages
                 // convert the content string to HTML
-                result = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\">" +
-                "<html>" +
-                "<head>" +
-                    "<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\"/>" +
-                    "<title>Fun</title>" +
-                    "<style>" +
-                    "body {" +
-                        "background-image: url(\"https://storageaccountfunrgaa05.blob.core.windows.net/app-data/IMG_9456_sm_cr.JPG\"); " +
-                        "background-repeat: no-repeat; " +
-                        "background-position: center; " +
-                        "background-attachment: fixed; " +
-                    "}" +
-                    "p {" +
-                        "background-color: LightGray; " +
-                        "white-space: pre; " +
-                        "opacity: 0.7; " +
-                        "margin: 50; " +
-                        "padding: 20;" +
-                    "}" +
-                    "</style>" +
-                "</head>" +
-                "<body lang=\"en-US\" dir=\"ltr\">" +
-                "<a href=\"https://fun-kd.azurewebsites.net/api/getForm\">Click here to add an entry</a></br>";
-
-                content = content.replaceAll("\">", "\n");
-                content = content.replaceAll("<Entry ", "<p>");
-                content = content.replaceAll("timestamp=\"", "Signed in on: ");
-                content = content.replaceAll("</Entry>", "</p>");
-
-                result += content + "<a href=\"https://fun-kd.azurewebsites.net/api/getForm\">Click here to add an entry</a></body></html>";
+                content = inFile;
             }
+
+            content = content.replaceAll("\">", "\n");
+            content = content.replaceAll("<Entry ", "<p>");
+            content = content.replaceAll("timestamp=\"", "Signed in on: ");
+            content = content.replaceAll("</Entry>", "</p>");
+
+            result += content + getPageFooter();
 
             // build HTTP response with the content of the POST body
             return request.createResponseBuilder(HttpStatus.OK)
                 .body(result)
                 .header("Content-Type","text/html")
                 .build();
+    }
+
+    private String getPageHeader() {
+        return "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\">" +
+        "<html>" +
+        "<head>" +
+            "<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\"/>" +
+            "<title>Fun</title>" +
+            "<style>" +
+            "body {" +
+                "background-image: url(\"https://storageaccountfunrgaa05.blob.core.windows.net/app-data/IMG_9456_sm_cr.JPG\"); " +
+                "background-repeat: no-repeat; " +
+                "background-position: center; " +
+                "background-attachment: fixed; " +
+            "}" +
+            "p {" +
+                "background-color: LightGray; " +
+                "white-space: pre; " +
+                "opacity: 0.7; " +
+                "margin: 50; " +
+                "padding: 20;" +
+            "}" +
+            "</style>" +
+        "</head>" +
+        "<body lang=\"en-US\" dir=\"ltr\">" +
+        "<a href=\"https://fun-kd.azurewebsites.net/api/getForm\">Click here to add an entry</a></br>";
+    }
+
+    private String getPageFooter() {
+        return "<a href=\"https://fun-kd.azurewebsites.net/api/getForm\">Click here to add an entry</a></body></html>";
     }
 }
