@@ -47,62 +47,69 @@ public class Function {
     @FunctionName("write")
     @StorageAccount("AzureWebJobsStorage")
     public HttpResponseMessage write(
-        @HttpTrigger(name = "req", methods = {HttpMethod.POST}, authLevel = AuthorizationLevel.ANONYMOUS)
+        @HttpTrigger(name = "req", methods = {HttpMethod.GET, HttpMethod.POST}, authLevel = AuthorizationLevel.ANONYMOUS)
             HttpRequestMessage<Optional<String>> request,
         @BlobInput(name = "file", dataType = "string", path = "app-data/data.txt") String inFile,
         @BlobOutput(name = "target", path = "app-data/data.txt") OutputBinding<String> outputItem,
         final ExecutionContext context) {
-            // Save blob to outputItem
-            String content = request.getBody().get();
-            try {
-                content = URLDecoder.decode(content, "utf-8" /*Strangely, Maven on Azure didn't like StandardCharsets.UTF_8*/);
-                if (content.startsWith("message=")) {
-                    content = content.substring("message=".length());
+            
+            String content = "";
+            String result = null;
+            if (request.getHttpMethod() == HttpMethod.POST) {
+                // Add body of the request to the stored messages
+                content = request.getBody().get();
+                try {
+                    content = URLDecoder.decode(content, "utf-8" /*Strangely, Maven/compiler on Azure didn't like StandardCharsets.UTF_8*/);
+                    if (content.startsWith("message=")) {
+                        content = content.substring("message=".length());
+                    }
+                    Calendar calendar = Calendar.getInstance();
+                    content = String.format("<Entry timestamp=\"%1$tY-%1$tm-%1$td %1$tH:%1$tM:%1$tS\">\n%2$s\n</Entry>\n\n",
+                        calendar, content) + inFile;
+                    outputItem.setValue(content);
+                } catch (Exception e) {
+                    content = e.toString();
+                    for (StackTraceElement el : e.getStackTrace()) {
+                        content += "\n" + el;
+                    }
+                    return request.createResponseBuilder(HttpStatus.BAD_REQUEST)
+                        .body(content)
+                        .build();
                 }
-                Calendar calendar = Calendar.getInstance();
-                content = String.format("<Entry timestamp=\"%1$tY-%1$tm-%1$td %1$tH:%1$tM:%1$tS\">\n%2$s\n</Entry>\n\n",
-                    calendar, content) + inFile;
-                outputItem.setValue(content);
-            } catch (Exception e) {
-                content = e.toString();
-                for (StackTraceElement el : e.getStackTrace()) {
-                    content += "\n" + el;
-                }
-                return request.createResponseBuilder(HttpStatus.BAD_REQUEST)
-                    .body(content)
-                    .build();
+            } else {
+                // This is a GET request, just get the existing messages
+                // convert the content string to HTML
+                result = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\">" +
+                "<html>" +
+                "<head>" +
+                    "<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\"/>" +
+                    "<title>Fun</title>" +
+                    "<style>" +
+                    "body {" +
+                        "background-image: url(\"https://storageaccountfunrgaa05.blob.core.windows.net/app-data/IMG_9456_sm_cr.JPG\"); " +
+                        "background-repeat: no-repeat; " +
+                        "background-position: center; " +
+                        "background-attachment: fixed; " +
+                    "}" +
+                    "p {" +
+                        "background-color: LightGray; " +
+                        "white-space: pre; " +
+                        "opacity: 0.7; " +
+                        "margin: 50; " +
+                        "padding: 20;" +
+                    "}" +
+                    "</style>" +
+                "</head>" +
+                "<body lang=\"en-US\" dir=\"ltr\">" +
+                "<a href=\"https://fun-kd.azurewebsites.net/api/getForm\">Click here to add an entry</a></br>";
+
+                content = content.replaceAll("\">", "\n");
+                content = content.replaceAll("<Entry ", "<p>");
+                content = content.replaceAll("timestamp=\"", "Signed in on: ");
+                content = content.replaceAll("</Entry>", "</p>");
+
+                result += content + "<a href=\"https://fun-kd.azurewebsites.net/api/getForm\">Click here to add an entry</a></body></html>";
             }
-
-            // convert the content string to HTML
-            String result = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\">" +
-            "<html>" +
-            "<head>" +
-                "<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\"/>" +
-                "<title>Fun</title>" +
-                "<style>" +
-                "body {" +
-                    "background-image: url(\"https://storageaccountfunrgaa05.blob.core.windows.net/app-data/IMG_9456_sm_cr.JPG\"); " +
-                    "background-repeat: no-repeat; " +
-                    "background-position: center; " +
-                    "background-attachment: fixed; " +
-                "}" +
-                "p {" +
-                    "background-color: LightGray; " +
-                    "white-space: pre; " +
-                    "opacity: 0.7; " +
-                    "margin: 50; " +
-                    "padding: 20;" +
-                "}" +
-                "</style>" +
-            "</head>" +
-            "<body lang=\"en-US\" dir=\"ltr\">";
-
-            content = content.replaceAll("\">", "\n");
-            content = content.replaceAll("<Entry ", "<p>");
-            content = content.replaceAll("timestamp=\"", "Signed in on: ");
-            content = content.replaceAll("</Entry>", "</p>");
-
-            result += content + "</body></html>";
 
             // build HTTP response with the content of the POST body
             return request.createResponseBuilder(HttpStatus.OK)
