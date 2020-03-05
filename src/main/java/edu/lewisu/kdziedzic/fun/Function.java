@@ -50,11 +50,13 @@ public class Function {
         @HttpTrigger(name = "req", methods = {HttpMethod.GET, HttpMethod.POST}, authLevel = AuthorizationLevel.ANONYMOUS)
             HttpRequestMessage<Optional<String>> request,
         @BlobInput(name = "file", dataType = "string", path = "app-data/data.txt") String inFile,
+        @BlobInput(name = "htmlHeader", dataType = "string", path = "app-data/header.txt") String pageHeader,
+        @BlobInput(name = "htmlFooter", dataType = "string", path = "app-data/footer.txt") String pageFooter,
         @BlobOutput(name = "target", path = "app-data/data.txt") OutputBinding<String> outputItem,
         final ExecutionContext context) {
 
             String content = "";
-            String result = getPageHeader();
+            String result = pageHeader;
 
             if (request.getHttpMethod() == HttpMethod.POST) {
                 // Add body of the request to the stored messages
@@ -88,7 +90,7 @@ public class Function {
             content = content.replaceAll("timestamp=\"", "Signed in on: ");
             content = content.replaceAll("</Entry>", "</p>");
 
-            result += content + getPageFooter();
+            result += content + pageFooter;
 
             // build HTTP response with the content of the POST body
             return request.createResponseBuilder(HttpStatus.OK)
