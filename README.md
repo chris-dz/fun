@@ -25,3 +25,10 @@ and enjoy!
 
 Now that I have the deployment working, I believe I should be able to deliver all of the above functionality.
 Unfortunately, given my deployment experience, the short tutorial may not be so short...
+
+## Related projects:
+Fun client:
+https://github.com/chris-dz/fun-client.git
+
+Top Secret Fun:
+https://github.com/chris-dz/top-secret-fun.git
