@@ -1,5 +1,5 @@
 # Fun
-OOP class final project utilizing Azure Functions - abbreviated to Fun
+OOP class final project utilizing Azure Functions - abbreviated to Fun.
 
 ## To deploy:
 There are several methods. I'm deploying the functions to Azure by linking my Azure app with my GitHub repository.
