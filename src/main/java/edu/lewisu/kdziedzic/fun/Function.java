@@ -1,3 +1,19 @@
+// This is my Fun project (Azure Functions-based guest book)
+// Copyright (C) 2020  Krzysztof Dziedzic
+
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 package edu.lewisu.kdziedzic.fun;
 
 import java.net.URLDecoder;
@@ -6,7 +22,9 @@ import com.microsoft.azure.functions.annotation.*;
 import com.microsoft.azure.functions.*;
 
 /**
- * Azure Functions with HTTP Trigger.
+ * Azure Functions with HTTP Triggers implementing a simple guest book.
+ * 
+ * @author Krzysztof Dziedzic
  */
 public class Function {
     /**
@@ -31,6 +49,15 @@ public class Function {
         }
     }
 
+    /**
+     * Function listening at /api/getForm
+     * Displays a form allowing to add entries to the guest book.
+     * 
+     * @param request
+     * @param form
+     * @param context
+     * @return
+     */
     @FunctionName("getForm")
     @StorageAccount("AzureWebJobsStorage")
     public HttpResponseMessage getForm(
@@ -44,6 +71,19 @@ public class Function {
         return request.createResponseBuilder(HttpStatus.OK).body(response).header("Content-Type","text/html").build();
     }
 
+    /**
+     * Function listening at /api/write
+     * Allows listing previous entries (via GET) or adding a new entry (via POST)
+     * and listing all entries, including the new one.
+     * 
+     * @param request
+     * @param inFile
+     * @param pageHeader
+     * @param pageFooter
+     * @param outputItem
+     * @param context
+     * @return
+     */
     @FunctionName("write")
     @StorageAccount("AzureWebJobsStorage")
     public HttpResponseMessage write(

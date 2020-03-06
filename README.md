@@ -5,7 +5,11 @@ OOP class final project utilizing Azure Functions - abbreviated to Fun
 There are several methods. I'm deploying the functions to Azure by linking my Azure app with my GitHub repository.
 
 ## To use:
-Just navigate your browser to the url of the deployed application (temporarily: https://fun-kd.azurewebsites.net/api/HttpExample?name=Your%20Name) and enjoy!
+Just navigate your browser to the url of the deployed application:
+
+https://fun-kd.azurewebsites.net/api/getForm
+
+and enjoy!
 
 ## Version 1 features:
 1. The application works! It took me 5 hours to set up the test application deployment from GitHub to Azure, but when I figured it out, it felt awesome!
